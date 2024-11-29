@@ -1,1 +1,1 @@
-"# Mathonic" 
+# Mathonic 
