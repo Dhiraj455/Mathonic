@@ -1,6 +1,9 @@
 package com.example.mathonic
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,15 +28,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 
 @Composable
-fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int, id : Int) {
+fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int, id : Int, navController: NavController) {
     val num1 : MutableState<Int> = remember { mutableStateOf(n1) }
     val num2 : MutableState<Int> = remember { mutableStateOf(n2) }
     val num3 : MutableState<Int> = remember { mutableStateOf(n3) }
     val num4 : MutableState<Int> = remember { mutableStateOf(n4) }
     val result : MutableState<Int> = remember { mutableStateOf(res) }
     val someData : MutableState<Int> = remember { mutableStateOf(0) }
+    var isVisible = remember { mutableStateOf(false) }
     val doneCards = remember { mutableListOf<String>() }
     val selectedCards = remember { mutableStateListOf<Pair<String,String>>() }
     val opDone = remember { mutableListOf<Pair<Pair<String, Int>, Pair<String, Int>>>() }
@@ -159,7 +164,17 @@ fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int, id : Int) {
             }
         }
 
-        
+        AnimatedVisibility(
+            visible = isVisible.value,
+            enter = slideInHorizontally() + fadeIn(),
+            modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
+        ) {
+            Button(onClick = {
+                navController.navigate(Routes.LevelPage)
+            }) {
+                Text(text = "Go Back To Levels")
+            }
+        }
 
         Row(
             modifier = Modifier
@@ -337,12 +352,14 @@ fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int, id : Int) {
             if (countNegatives == 3 && countPositives == 1) {
                 if (result.value == someData.value){
                     Toast.makeText(context, "Correct Answer", Toast.LENGTH_SHORT).show()
+                    viewModel.updateLevel(id)
+                    isVisible.value = true
                 }
                 else {
                     Toast.makeText(context, "The answer is Wrong : ${someData.value}", Toast.LENGTH_SHORT).show()
                 }
             }
-            viewModel.updateLevel(id)
+
         }
     }
 }

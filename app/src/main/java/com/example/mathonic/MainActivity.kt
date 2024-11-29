@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                         val n4 = backStackEntry.arguments?.getString("n4")?.toIntOrNull() ?: 0
                         val res = backStackEntry.arguments?.getString("res")?.toIntOrNull() ?: 0
                         val id = backStackEntry.arguments?.getString("id")?.toIntOrNull() ?: 0
-                        GameBox(n1, n2, n3, n4, res, id)
+                        GameBox(n1, n2, n3, n4, res, id, navController = navController)
                     }
                     composable(Routes.StartPage){
                         StartPage(navController)
