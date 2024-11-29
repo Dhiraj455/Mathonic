@@ -159,6 +159,8 @@ fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int, id : Int) {
             }
         }
 
+        
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()

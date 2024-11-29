@@ -1,7 +1,5 @@
 package com.example.mathonic
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,9 +28,9 @@ fun LevelPage(viewModel: MathonicViewModel, navController: NavController) {
             .padding(16.dp)
     ) {
         // Top Bar
-        TopAppBar(
+        CenterAlignedTopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.White,
+                containerColor = Color.LightGray,
                 titleContentColor = Color.Black,
             ),
             title = {
