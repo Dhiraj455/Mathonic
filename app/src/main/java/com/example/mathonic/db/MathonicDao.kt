@@ -17,4 +17,7 @@ interface MathonicDao {
     @Query("DELETE FROM LEVELS")
     fun clearLevels()
 
+    @Query("UPDATE LEVELS SET isCompleted = 1 WHERE id = :id")
+    fun updateLevel(id : Int)
+
 }

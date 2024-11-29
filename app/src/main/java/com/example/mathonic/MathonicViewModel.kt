@@ -21,4 +21,10 @@ class MathonicViewModel  :ViewModel() {
             mathonicDao.clearLevels()
         }
     }
+
+    fun updateLevel(id :Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mathonicDao.updateLevel(id)
+        }
+    }
 }

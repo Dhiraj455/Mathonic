@@ -24,9 +24,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int) {
+fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int, id : Int) {
     val num1 : MutableState<Int> = remember { mutableStateOf(n1) }
     val num2 : MutableState<Int> = remember { mutableStateOf(n2) }
     val num3 : MutableState<Int> = remember { mutableStateOf(n3) }
@@ -52,6 +53,7 @@ fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int) {
     }
 
     val context = LocalContext.current
+    val viewModel : MathonicViewModel = viewModel()
     fun undotask () {
         if (opDone.isNotEmpty()) {
             val lastTask = opDone.removeAt(opDone.size - 1)
@@ -338,6 +340,7 @@ fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int) {
                     Toast.makeText(context, "The answer is Wrong : ${someData.value}", Toast.LENGTH_SHORT).show()
                 }
             }
+            viewModel.updateLevel(id)
         }
     }
 }
