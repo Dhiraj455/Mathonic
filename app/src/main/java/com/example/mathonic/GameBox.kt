@@ -11,8 +11,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -30,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int, id : Int, navController: NavController) {
     val num1 : MutableState<Int> = remember { mutableStateOf(n1) }
@@ -89,216 +93,234 @@ fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int, id : Int, navCont
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.fillMaxWidth()) {
-                CardItem(num1.value, selectedCards, "Card1"){
-                    if(selectedCards.any { it.second == "Card1" }){
-                        selectedCards.removeAll{ it.second == "Card1" }
-                    }
-                    else {
-                        if (selectedCards.size < 3) {
-                            if (selectedCards.size == 0 || selectedCards.size == 2){
-                                selectedCards.add(Pair("${num1.value}", "Card1"))
-                            }
-                        }
-                    }
-                }
-                CardItem(num2.value, selectedCards, "Card2"){
-                    if(selectedCards.any { it.second == "Card2" }){
-                        selectedCards.removeAll{ it.second == "Card2" }
-                    }
-                    else{
-                        if (selectedCards.size < 3) {
-                            if (selectedCards.size == 0 || selectedCards.size == 2){
-                                selectedCards.add(Pair("${num2.value}", "Card2"))
-                            }
-                        }
-                    }
-                }
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.fillMaxWidth()) {
-                CardItem(num3.value, selectedCards, "Card3"){
-                    if(selectedCards.any { it.second == "Card3" }){
-                        selectedCards.removeAll{ it.second == "Card3" }
-                    }
-                    else {
-                        if (selectedCards.size < 3) {
-                            if (selectedCards.size == 0 || selectedCards.size == 2){
-                                selectedCards.add(Pair("${num3.value}", "Card3"))
-                            }
-                        }
-                    }
-                }
-                CardItem(num4.value, selectedCards, "Card4"){
-                    if(selectedCards.any { it.second == "Card4" }){
-                        selectedCards.removeAll{ it.second == "Card4" }
-                    }
-                    else{
-                        if (selectedCards.size < 3) {
-                            if (selectedCards.size == 0 || selectedCards.size == 2){
-                                selectedCards.add(Pair("${num4.value}", "Card4"))
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Center overlapping card
-        Card(
-            modifier = Modifier
-                .size(150.dp)
-                .align(Alignment.Center),
-            shape = RoundedCornerShape(50),
-            colors = CardDefaults.cardColors(Color.White),
-            elevation = CardDefaults.elevatedCardElevation(8.dp)
-        ) {
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-                Text(text = "${result.value}", style = MaterialTheme.typography.bodyLarge, color = Color.Black)
-            }
-        }
-
-        AnimatedVisibility(
-            visible = isVisible.value,
-            enter = slideInHorizontally() + fadeIn(),
-            modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
-        ) {
-            Button(onClick = {
-                navController.navigate(Routes.LevelPage)
-            }) {
-                Text(text = "Go Back To Levels")
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .padding(start = 8.dp, end = 8.dp, top = 16.dp, bottom = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Addition button
-            Button(
-                onClick = {
-                    if(selectedCards.any { it.second == "Add" }){
-                        selectedCards.removeAll{ it.second == "Add" }
-                    }
-                    else {
-                        if (selectedCards.size < 3) {
-                            if (selectedCards.size == 1) {
-                                selectedCards.add(Pair("+","Add"))
-                            }
-                        }
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selectedCards.any { it.second == "Add" }) Color.LightGray else Color.Gray
-                ),
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        CenterAlignedTopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                containerColor = Color.Transparent,
+                titleContentColor = Color.Black,
+            ),
+            title = {
+                Text(
+                    text = "Mathonic",
+                    style = MaterialTheme.typography.titleLarge
+                )
+            },
+        )
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(1f),
-                shape = RoundedCornerShape(16.dp),
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.fillMaxWidth()) {
+                    CardItem(num1.value, selectedCards, "Card1"){
+                        if(selectedCards.any { it.second == "Card1" }){
+                            selectedCards.removeAll{ it.second == "Card1" }
+                        }
+                        else {
+                            if (selectedCards.size < 3) {
+                                if (selectedCards.size == 0 || selectedCards.size == 2){
+                                    selectedCards.add(Pair("${num1.value}", "Card1"))
+                                }
+                            }
+                        }
+                    }
+                    CardItem(num2.value, selectedCards, "Card2"){
+                        if(selectedCards.any { it.second == "Card2" }){
+                            selectedCards.removeAll{ it.second == "Card2" }
+                        }
+                        else{
+                            if (selectedCards.size < 3) {
+                                if (selectedCards.size == 0 || selectedCards.size == 2){
+                                    selectedCards.add(Pair("${num2.value}", "Card2"))
+                                }
+                            }
+                        }
+                    }
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = Modifier.fillMaxWidth()) {
+                    CardItem(num3.value, selectedCards, "Card3"){
+                        if(selectedCards.any { it.second == "Card3" }){
+                            selectedCards.removeAll{ it.second == "Card3" }
+                        }
+                        else {
+                            if (selectedCards.size < 3) {
+                                if (selectedCards.size == 0 || selectedCards.size == 2){
+                                    selectedCards.add(Pair("${num3.value}", "Card3"))
+                                }
+                            }
+                        }
+                    }
+                    CardItem(num4.value, selectedCards, "Card4"){
+                        if(selectedCards.any { it.second == "Card4" }){
+                            selectedCards.removeAll{ it.second == "Card4" }
+                        }
+                        else{
+                            if (selectedCards.size < 3) {
+                                if (selectedCards.size == 0 || selectedCards.size == 2){
+                                    selectedCards.add(Pair("${num4.value}", "Card4"))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
+            // Center overlapping card
+            Card(
+                modifier = Modifier
+                    .size(150.dp)
+                    .align(Alignment.Center),
+                shape = RoundedCornerShape(50),
+                colors = CardDefaults.cardColors(Color.White),
+                elevation = CardDefaults.elevatedCardElevation(8.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                    Text(text = "${result.value}", style = MaterialTheme.typography.bodyLarge, color = Color.Black)
+                }
+            }
+
+            this@Column.AnimatedVisibility(
+                visible = isVisible.value,
+                enter = slideInHorizontally() + fadeIn(),
+                modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
+            ) {
+                Button(onClick = {
+                    navController.navigate(Routes.LevelPage){
+                        popUpTo(Routes.StartPage)
+                    }
+                }) {
+                    Text(text = "Go Back To Levels")
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .padding(start = 8.dp, end = 8.dp, top = 16.dp, bottom = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Addition button
+                Button(
+                    onClick = {
+                        if(selectedCards.any { it.second == "Add" }){
+                            selectedCards.removeAll{ it.second == "Add" }
+                        }
+                        else {
+                            if (selectedCards.size < 3) {
+                                if (selectedCards.size == 1) {
+                                    selectedCards.add(Pair("+","Add"))
+                                }
+                            }
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selectedCards.any { it.second == "Add" }) Color.LightGray else Color.Gray
+                    ),
+                    modifier = Modifier
+                        .weight(1f)
+                        .aspectRatio(1f),
+                    shape = RoundedCornerShape(16.dp),
+
+                    ) {
+                    Text(text = "+", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp))
+                }
+
+                // Subtraction button
+                Button(
+                    onClick = {
+                        if(selectedCards.any { it.second == "Sub" }){
+                            selectedCards.removeAll{ it.second == "Sub" }
+                        }
+                        else {
+                            if (selectedCards.size < 3) {
+                                if (selectedCards.size == 1) {
+                                    selectedCards.add(Pair("-","Sub"))
+                                }
+                            }
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selectedCards.any { it.second == "Sub" }) Color.LightGray else Color.Gray
+                    ),
+                    modifier = Modifier
+                        .weight(1f)
+                        .aspectRatio(1f),
+                    shape = RoundedCornerShape(16.dp),
                 ) {
-                Text(text = "+", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp))
-            }
+                    Text(text = "-", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp))
+                }
 
-            // Subtraction button
-            Button(
-                onClick = {
-                    if(selectedCards.any { it.second == "Sub" }){
-                        selectedCards.removeAll{ it.second == "Sub" }
-                    }
-                    else {
-                        if (selectedCards.size < 3) {
-                            if (selectedCards.size == 1) {
-                                selectedCards.add(Pair("-","Sub"))
+                Button(
+                    onClick = {
+                        if(selectedCards.any { it.second == "Mul" }){
+                            selectedCards.removeAll{ it.second == "Mul" }
+                        }
+                        else {
+                            if (selectedCards.size < 3) {
+                                if (selectedCards.size == 1) {
+                                    selectedCards.add(Pair("x","Mul"))
+                                }
                             }
                         }
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selectedCards.any { it.second == "Sub" }) Color.LightGray else Color.Gray
-                ),
-                modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(1f),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Text(text = "-", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp))
-            }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selectedCards.any { it.second == "Mul" }) Color.LightGray else Color.Gray
+                    ),
+                    modifier = Modifier
+                        .weight(1f)
+                        .aspectRatio(1f),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
+                    Text(text = "×", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp))
+                }
 
-            Button(
-                onClick = {
-                    if(selectedCards.any { it.second == "Mul" }){
-                        selectedCards.removeAll{ it.second == "Mul" }
-                    }
-                    else {
-                        if (selectedCards.size < 3) {
-                            if (selectedCards.size == 1) {
-                                selectedCards.add(Pair("x","Mul"))
+                // Division button
+                Button(
+                    onClick = {
+                        if(selectedCards.any { it.second == "Div" }){
+                            selectedCards.removeAll{ it.second == "Div" }
+                        }
+                        else {
+                            if (selectedCards.size < 3) {
+                                if (selectedCards.size == 1) {
+                                    selectedCards.add(Pair("÷","Div"))
+                                }
                             }
                         }
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selectedCards.any { it.second == "Mul" }) Color.LightGray else Color.Gray
-                ),
-                modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(1f),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Text(text = "×", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp))
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selectedCards.any { it.second == "Div" }) Color.LightGray else Color.Gray
+                    ),
+                    modifier = Modifier
+                        .weight(1f)
+                        .aspectRatio(1f),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
+                    Text(text = "÷", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp))
+                }
+
+                Button(
+                    onClick = {
+                        undotask()
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .aspectRatio(1f),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
+                    Text(text = "↶", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp))
+                }
+
+
             }
-
-            // Division button
-            Button(
-                onClick = {
-                    if(selectedCards.any { it.second == "Div" }){
-                        selectedCards.removeAll{ it.second == "Div" }
-                    }
-                    else {
-                        if (selectedCards.size < 3) {
-                            if (selectedCards.size == 1) {
-                                selectedCards.add(Pair("÷","Div"))
-                            }
-                        }
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = if (selectedCards.any { it.second == "Div" }) Color.LightGray else Color.Gray
-                ),
-                modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(1f),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Text(text = "÷", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp))
-            }
-
-            Button(
-                onClick = {
-                    undotask()
-                },
-                modifier = Modifier
-                    .weight(1f)
-                    .aspectRatio(1f),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Text(text = "↶", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp))
-            }
-
-
         }
     }
+
     LaunchedEffect(selectedCards.size) {
         if (selectedCards.size == 3) {
             val res = doOperation()
@@ -309,19 +331,19 @@ fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int, id : Int, navCont
             when (cardId){
                 "Card1" -> {
                     undoNum1 = num1.value
-                    num1.value = -1
+                    num1.value = -100
                 }
                 "Card2" -> {
                     undoNum1 = num2.value
-                    num2.value = -1
+                    num2.value = -100
                 }
                 "Card3" -> {
                     undoNum1 = num3.value
-                    num3.value = -1
+                    num3.value = -100
                 }
                 "Card4" -> {
                     undoNum1 = num4.value
-                    num4.value = -1
+                    num4.value = -100
                 }
             }
             when (cardId2){
@@ -346,7 +368,7 @@ fun GameBox(n1 : Int, n2 : Int, n3 : Int, n4 : Int, res : Int, id : Int, navCont
             someData.value = res
             selectedCards.clear()
             val numbers = listOf(num1.value, num2.value, num3.value, num4.value)
-            val countNegatives = numbers.count { it == -1 }
+            val countNegatives = numbers.count { it == -100 }
             val countPositives = numbers.count { it > 0 }
 
             if (countNegatives == 3 && countPositives == 1) {
@@ -374,7 +396,7 @@ fun CardItem(value : Int, selectedCards: List<Pair<String, String>>, cardId : St
         modifier = Modifier
             .size(160.dp)
             .clickable {
-                if (value != -1) onClick()
+                if (value != -100) onClick()
             },
         colors = CardDefaults.cardColors(
             if (isSelected) Color.Green else Color.Gray // Change color when selected
@@ -383,7 +405,7 @@ fun CardItem(value : Int, selectedCards: List<Pair<String, String>>, cardId : St
         elevation = CardDefaults.elevatedCardElevation()
     ) {
         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
-            Text(text = if (value != -1) "$value" else "", style = MaterialTheme.typography.bodyLarge, color = if (isSelected) Color.Black else Color.White)
+            Text(text = if (value != -100) "$value" else "", style = MaterialTheme.typography.bodyLarge, color = if (isSelected) Color.Black else Color.White)
         }
     }
 }

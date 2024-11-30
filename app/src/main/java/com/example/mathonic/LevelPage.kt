@@ -30,7 +30,7 @@ fun LevelPage(viewModel: MathonicViewModel, navController: NavController) {
         // Top Bar
         CenterAlignedTopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = Color.LightGray,
+                containerColor = Color.Transparent,
                 titleContentColor = Color.Black,
             ),
             title = {
